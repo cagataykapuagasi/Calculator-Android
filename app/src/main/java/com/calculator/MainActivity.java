@@ -14,14 +14,16 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-
+    //TextView değişkeni
     private TextView mCalculatorDisplay;
+
+    //Calculator class ı
     private Calculator mCalculator;
+    //digitler
     private static final String DIGITS = "0123456789.";
+    //en son operatör e basılıp basılmadığını tutar.
     private Boolean isOperand = true;
 
-    DecimalFormat df = new DecimalFormat("@###########");
 
     @SuppressLint("NewApi")
     @Override
@@ -34,10 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCalculator = new Calculator();
         mCalculatorDisplay = (TextView) findViewById(R.id.textView);
 
-        df.setMinimumFractionDigits(0);
-        df.setMinimumIntegerDigits(1);
-        df.setMaximumIntegerDigits(8);
-
+        //tüm butonlar için listener ekle
         findViewById(R.id.btn0).setOnClickListener(this);
         findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btn2).setOnClickListener(this);
@@ -58,25 +57,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btnSonuc).setOnClickListener(this);
 
 
-
     }
 
+    //onClick eventini dinlemek için override ediyoruz
     @Override
     public void onClick(View v) {
+        String calculatorText = mCalculatorDisplay.getText().toString();
 
+        //basılan tuştaki digit i yada operatörü almak için
         String buttonPressed = ((Button) v).getText().toString();
 
+        // digitlardan birine basıldı.
         if (DIGITS.contains(buttonPressed)) {
 
-            // digit was pressed
-
+            //. ya basıldıysa
             if (buttonPressed.equals(".")) {
-                // ERROR PREVENTION
-                // This will avoid error if only the decimal is hit before an operator, by placing a leading zero
-                // before the decimal
-                mCalculatorDisplay.setText(0 + buttonPressed);
+                String lastChar = calculatorText.substring(calculatorText.length() - 1);
+
+                //son karakter operatör ve . değil ise . koy
+                if (!lastChar.equals("*") && !lastChar.equals("/") && !lastChar.equals("+") && !lastChar.equals("-") && !lastChar.equals(".")) {
+                    mCalculatorDisplay.append(buttonPressed);
+                }
+
+                //sayı basıldıysa
             } else {
-                if (mCalculatorDisplay.getText().toString().equals("0")) {
+                //sadece 0 var ise basılan sayıyı 0 yerine yaz yok ise basılan sayıyı ekle
+                if (calculatorText.equals("0")) {
                     mCalculatorDisplay.setText(buttonPressed);
                 } else {
                     mCalculatorDisplay.append(buttonPressed);
@@ -87,34 +93,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } else {
-            if(buttonPressed.equals("Clear")) {
+            //clear a basıldıysa 0 yaz
+            if (buttonPressed.equals("Clear")) {
                 mCalculatorDisplay.setText("0");
 
-            } else if(buttonPressed.equals("=")) {
+                //sonuç istendiyse Calculatır class ına işlemleri göndererek sonucu yazdır.
+            } else if (buttonPressed.equals("=")) {
                 mCalculatorDisplay.setText(mCalculator.calculateResult(mCalculatorDisplay.getText().toString()));
-            }
-            else if(buttonPressed.equals("+/-")){
-                String calculatorText = mCalculatorDisplay.getText().toString();
-                if(!calculatorText.contains("+") && !calculatorText.contains("-") && !calculatorText.contains("*") && !calculatorText.contains("/") ) {
+
+                //işaret değişimine basıldıysa ve ekranda operatör yok ise işareti değiştir. operatör var ise hiçbir şey yapma.
+            } else if (buttonPressed.equals("+/-")) {
+                if (!calculatorText.contains("+") && !calculatorText.contains("-") && !calculatorText.contains("*") && !calculatorText.contains("/")) {
                     mCalculatorDisplay.setText("-" + calculatorText);
                 }
-                if(calculatorText.substring(0,1).equals("-") ) {
+                if (calculatorText.substring(0, 1).equals("-")) {
                     String newCalculatorText = calculatorText.substring(1);
                     mCalculatorDisplay.setText(newCalculatorText);
                 }
-            }
-            else {
-                //üst üste operatör eklenmemesi için
+
+                // "+-*/" tuşlarına basıldı ise
+            } else {
+                //daha önce operatör eklenmediyse ekler.
                 if (!isOperand) {
                     mCalculatorDisplay.append(buttonPressed);
                     isOperand = true;
                 }
             }
-            // operation was pressed
 
-
-            //mCalculatorBrain.performOperation(buttonPressed);
-            //mCalculatorDisplay.setText(df.format(mCalculatorBrain.getResult()));
 
         }
 

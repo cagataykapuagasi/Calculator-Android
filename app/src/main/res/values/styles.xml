@@ -8,8 +8,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        //header ı gizle
         <item name="windowNoTitle">true</item>
 
+        //status bar ı gizle
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>
