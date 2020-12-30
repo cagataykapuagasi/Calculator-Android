@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     //TextView değişkeni
     private TextView mCalculatorDisplay;
 
@@ -99,7 +100,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //sonuç istendiyse Calculatır class ına işlemleri göndererek sonucu yazdır.
             } else if (buttonPressed.equals("=")) {
-                mCalculatorDisplay.setText(mCalculator.calculateResult(mCalculatorDisplay.getText().toString()));
+                //birden fazla . girildiğinde,(örneğin "2.2.2 * 2") programın çökmemesi için hata yakalama
+                try {
+                    mCalculatorDisplay.setText(mCalculator.calculateResult(mCalculatorDisplay.getText().toString()));
+                } catch (NumberFormatException e) {
+                    mCalculatorDisplay.setText("0");
+                    Toast.makeText(MainActivity.this,
+                            "Hatalı format girdiniz lütfen tekrar deneyin.", Toast.LENGTH_LONG).show();
+                }
 
                 //işaret değişimine basıldıysa ve ekranda operatör yok ise işareti değiştir. operatör var ise hiçbir şey yapma.
             } else if (buttonPressed.equals("+/-")) {
