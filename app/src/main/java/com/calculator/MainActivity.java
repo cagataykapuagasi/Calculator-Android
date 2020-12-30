@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //işaret değişimine basıldıysa ve ekranda operatör yok ise işareti değiştir. operatör var ise hiçbir şey yapma.
             } else if (buttonPressed.equals("+/-")) {
-                if (!calculatorText.contains("+") && !calculatorText.contains("-") && !calculatorText.contains("*") && !calculatorText.contains("/")) {
+                if (!calculatorText.contains("+") && !calculatorText.contains("-") && !calculatorText.contains("*") && !calculatorText.contains("/") && !calculatorText.equals("0")) {
                     mCalculatorDisplay.setText("-" + calculatorText);
                 }
                 if (calculatorText.substring(0, 1).equals("-")) {
