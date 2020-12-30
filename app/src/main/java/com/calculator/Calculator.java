@@ -110,7 +110,7 @@ public class Calculator {
 
 
             //arraylistte operatör kalmayana kadar do işlemi devam edecek
-        } while (allOperations.contains("/") || allOperations.contains("*") || allOperations.contains("+") || allOperations.contains("/"));
+        } while (allOperations.contains("/") || allOperations.contains("*") || allOperations.contains("+") || allOperations.contains("-"));
 
 
         String result = allOperations.get(0);
